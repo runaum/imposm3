@@ -15,12 +15,13 @@ type Field struct {
 }
 
 type Table struct {
-	Name     string
-	Type     TableType             `json:"type"`
-	Mapping  map[string][]string   `json:"mapping"`
-	Mappings map[string]SubMapping `json:"mappings"`
-	Fields   []*Field              `json:"fields"`
-	Filters  *Filters              `json:"filters"`
+	Name        string
+	Type        TableType             `json:"type"`
+	Mapping     map[string][]string   `json:"mapping"`
+	Mappings    map[string]SubMapping `json:"mappings"`
+	Fields      []*Field              `json:"fields"`
+	Filters     *Filters              `json:"filters"`
+	KeepAllTags bool                  `json:"keepAllTags"`
 }
 
 type SubMapping struct {
