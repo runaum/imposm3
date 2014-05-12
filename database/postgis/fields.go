@@ -57,6 +57,24 @@ func (t *validatedGeometryType) GeneralizeSql(colSpec *ColumnSpec, spec *General
 	)
 }
 
+type hstoreType struct {
+ 	name string
+}
+
+func (t *hstoreType) Name() string {
+	return t.name
+}
+
+func (t *hstoreType) PrepareInsertSql(i int, spec *TableSpec) string {
+	return fmt.Sprintf("$%d::hstore",
+		i,
+	)
+}
+
+func (t *hstoreType) GeneralizeSql(colSpec *ColumnSpec, spec *GeneralizedTableSpec) string {
+	return "\"" + colSpec.Name + "\""
+}
+
 var pgTypes map[string]ColumnType
 
 func init() {
@@ -69,5 +87,6 @@ func init() {
 		"float32":            &simpleColumnType{"REAL"},
 		"geometry":           &geometryType{"GEOMETRY"},
 		"validated_geometry": &validatedGeometryType{geometryType{"GEOMETRY"}},
+		"map":                &hstoreType{"HSTORE"},
 	}
 }
