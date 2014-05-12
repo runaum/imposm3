@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"fmt"
 )
 
 var log = logging.NewLogger("mapping")
@@ -29,6 +30,7 @@ func init() {
 		"pseudoarea":           {"pseudoarea", "float32", PseudoArea, nil},
 		"zorder":               {"zorder", "int32", nil, MakeZOrder},
 		"string_suffixreplace": {"string_suffixreplace", "string", nil, MakeSuffixReplace},
+		"tags_hstore":          {"tags_hstore", "map", TagsHstore, nil},
 	}
 }
 
@@ -157,6 +159,22 @@ func PseudoArea(val string, elem *element.OSMElem, match Match) interface{} {
 		return nil
 	}
 	return float32(area)
+}
+
+func TagsHstore(val string, elem *element.OSMElem, match Match) interface{} {
+	var pairs []string
+	for k, v := range elem.Tags {
+		r := strings.NewReplacer("\"", "\\\"")
+
+		pair := fmt.Sprintf("\"%s\"=>\"%s\"", r.Replace(k), r.Replace(v))
+		pairs = append(pairs, pair)
+	}
+
+	if len(pairs) == 0 {
+		return nil
+	}
+
+	return strings.Join(pairs, ", ")
 }
 
 var wayRanks map[string]int
