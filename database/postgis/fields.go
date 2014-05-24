@@ -87,6 +87,6 @@ func init() {
 		"float32":            &simpleColumnType{"REAL"},
 		"geometry":           &geometryType{"GEOMETRY"},
 		"validated_geometry": &validatedGeometryType{geometryType{"GEOMETRY"}},
-		"map":                &hstoreType{"HSTORE"},
+		"hstore":             &hstoreType{"HSTORE"},
 	}
 }

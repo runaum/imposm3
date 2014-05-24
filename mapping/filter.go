@@ -9,8 +9,8 @@ func (m *Mapping) NodeTagFilter() *TagFilter {
 	m.mappings("point", mappings)
 	tags := make(map[string]bool)
 	m.extraTags("point", tags)
-	// TODO: Pass keepAllTags from table
-	return &TagFilter{mappings, tags, false}
+	// TODO: Get flag from table, not from mapping
+	return &TagFilter{mappings, tags, m.KeepAllTags}
 }
 
 func (m *Mapping) WayTagFilter() *TagFilter {
@@ -20,8 +20,8 @@ func (m *Mapping) WayTagFilter() *TagFilter {
 	tags := make(map[string]bool)
 	m.extraTags("linestring", tags)
 	m.extraTags("polygon", tags)
-	// TODO: Pass keepAllTags from table
-	return &TagFilter{mappings, tags, false}
+	// TODO: Get flag from table, not from mapping
+	return &TagFilter{mappings, tags, m.KeepAllTags}
 }
 
 func (m *Mapping) RelationTagFilter() *RelationTagFilter {
@@ -37,7 +37,7 @@ func (m *Mapping) RelationTagFilter() *RelationTagFilter {
 		"boundary":     []DestTable{},
 		"land_area":    []DestTable{},
 	}
-	return &RelationTagFilter{TagFilter{mappings, tags, false}}
+	return &RelationTagFilter{TagFilter{mappings, tags, m.KeepAllTags}}
 }
 
 type TagFilter struct {

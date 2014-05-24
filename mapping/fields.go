@@ -30,7 +30,7 @@ func init() {
 		"pseudoarea":           {"pseudoarea", "float32", PseudoArea, nil},
 		"zorder":               {"zorder", "int32", nil, MakeZOrder},
 		"string_suffixreplace": {"string_suffixreplace", "string", nil, MakeSuffixReplace},
-		"tags_hstore":          {"tags_hstore", "map", TagsHstore, nil},
+		"hstore":          	{"hstore", "hstore", TagsHstore, nil},
 	}
 }
 
@@ -163,10 +163,13 @@ func PseudoArea(val string, elem *element.OSMElem, match Match) interface{} {
 
 func TagsHstore(val string, elem *element.OSMElem, match Match) interface{} {
 	var pairs []string
+	
+	r := strings.NewReplacer("\\", "\\\\")
+	r2 := strings.NewReplacer("\"", "\\\"")
+	//r := strings.NewReplacer("\\", "")
+	//r2 := strings.NewReplacer("\"", "")
 	for k, v := range elem.Tags {
-		r := strings.NewReplacer("\"", "\\\"")
-
-		pair := fmt.Sprintf("\"%s\"=>\"%s\"", r.Replace(k), r.Replace(v))
+		pair := fmt.Sprintf("\"%s\"=>\"%s\"", r2.Replace(r.Replace(k)), r2.Replace(r.Replace(v)))
 		pairs = append(pairs, pair)
 	}
 
@@ -174,7 +177,7 @@ func TagsHstore(val string, elem *element.OSMElem, match Match) interface{} {
 		return nil
 	}
 
-	return strings.Join(pairs, ", ")
+	return strings.Join(pairs, ",")
 }
 
 var wayRanks map[string]int

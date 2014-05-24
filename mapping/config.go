@@ -21,7 +21,6 @@ type Table struct {
 	Mappings    map[string]SubMapping `json:"mappings"`
 	Fields      []*Field              `json:"fields"`
 	Filters     *Filters              `json:"filters"`
-	KeepAllTags bool                  `json:"keepAllTags"`
 }
 
 type SubMapping struct {
@@ -46,6 +45,7 @@ type GeneralizedTables map[string]*GeneralizedTable
 type Mapping struct {
 	Tables            Tables            `json:"tables"`
 	GeneralizedTables GeneralizedTables `json:"generalized_tables"`
+	KeepAllTags       bool              `json:"keepAllTags"`
 }
 
 type ElementFilter func(tags *element.Tags) bool
